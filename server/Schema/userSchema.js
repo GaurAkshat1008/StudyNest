@@ -7,9 +7,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  username:{
-    type:String,
-    required: true
+  username: {
+    type: String,
+    required: true,
   },
   email: {
     type: String,
@@ -23,7 +23,23 @@ const userSchema = new Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Room",
-    }
+    },
+  ],
+  notifs: [
+    {
+      seen: {
+        type: Boolean,
+        default: false,
+      },
+      message: {
+        type: String,
+        required: true,
+      },
+      room: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Room",
+      },
+    },
   ],
   createdAt: {
     type: Date,

@@ -3,35 +3,40 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const roomSchema = new Schema({
-  name:{
+  name: {
     type: String,
     required: true,
   },
-  desc:{
+  desc: {
     type: String,
     required: true,
   },
   img: {
     type: Number,
-    required: true
+    required: true,
   },
+  resources: [
+    {
+      type: String,
+    },
+  ],
   users: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-    }
+    },
   ],
   admin: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-    }
+    },
   ],
-  chats:[
+  chats: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Chat",
-    }
+    },
   ],
   createdAt: {
     type: Date,

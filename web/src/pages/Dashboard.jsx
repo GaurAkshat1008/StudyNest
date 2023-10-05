@@ -2,11 +2,17 @@ import { Box, Button, Flex, Grid, GridItem, Skeleton, Stack } from "@chakra-ui/r
 import { loadRooms } from "../axios/axios";
 import { useEffect, useState } from "react";
 import RoomCard from "../component/RoomCard";
+import { useLoaderData } from "react-router-dom";
 
 const Dashboard = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const {loading:ld, user} = useLoaderData();
+  console.log(user)
+  if(!ld && !user){
+    window.location.href = '/login'
+  }
   let body = null;
   const getRooms = async () => {
     const data = await loadRooms();

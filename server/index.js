@@ -10,6 +10,7 @@ import roomRouter from "./Router/room.js";
 import chatRouter from "./Router/chat.js";
 import { Server } from "socket.io";
 import { createServer } from "http";
+import Chat from "./Schema/chatSchema.js";
 
 const main = async () => {
   const app = express();
@@ -25,6 +26,7 @@ const main = async () => {
   io.on("connection", (socket) => {
     socket.on("createChat", (data) => {
       socket.broadcast.emit("chatCreated", data);
+      console.log(data)
     })
   });
   app.use(express.json());

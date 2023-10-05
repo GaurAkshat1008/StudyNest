@@ -1,4 +1,5 @@
 import axios from "axios";
+import { v4 } from "uuid";
 
 const instance = axios.create({
   baseURL: "http://localhost:4000/api",
@@ -58,14 +59,65 @@ export const findUserById = async (userId) => {
 export const loadChats = async (roomId) => {
   const res = await instance.post("/room/chats/loadchats", { roomId });
   return res.data;
-}
+};
 
-export const createChats = async(roomId, message) => {
+export const createChats = async (roomId, message) => {
   const res = await instance.post("/chat/create", { roomId, message });
   return res.data;
-}
+};
 
-export  const readChatById = async (chatId) => {
-  const res = await instance.post("/chat/read", {chatId});
-  return res.data
-}
+export const readChatById = async (chatId) => {
+  const res = await instance.post("/chat/read", { chatId });
+  return res.data;
+};
+
+export const searchUser = async (emailOrUsername) => {
+  const res = await instance.post("/user/util/searchuser", { emailOrUsername });
+  return res.data;
+};
+
+export const invitemember = async (roomId, userId) => {
+  const res = await instance.post("/room/user/invitemember", {
+    roomId,
+    userId,
+  });
+  return res.data;
+};
+
+export const readNotif = async () => {
+  const res = await instance.post("/user/util/readnotif");
+  return res.data;
+};
+
+export const deleteNotif = async (notifId) => {
+  const res = await instance.post("/user/util/deletenotif", { notifId });
+  return res.data;
+};
+
+export const joinRoom = async (roomId) => {
+  const res = await instance.post("/room/joinroom", { roomId });
+  return res.data;
+};
+
+export const addResource = async (roomId, resource) => {
+  const res = await instance.post("/room/res/add", { roomId, resource });
+  return res.data;
+};
+
+export const handleUpload = async (file, room) => {
+  const formData = new FormData();
+  const upload_preset = "hxhc2dge";
+  const cloudName = "drk6tmn92";
+  console.log(file)
+  formData.append("file", file);
+  formData.append("upload_preset", upload_preset);
+  formData.append("folder", room._id);
+  const filename = file.name + v4();
+  formData.append("public_id", filename);
+  const res = await axios.post(
+    `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
+    formData
+  );
+  const url = res.data.secure_url;
+  return url;
+};

@@ -15,7 +15,7 @@ const Participant = ({ user, room }) => {
   const { loading, user: us } = useAuth();
   const isAdmin = room.admin.includes(user._id);
   return (
-    <GridItem display={"flex"} justifyContent={"center"}>
+    <GridItem display={"flex"} justifyContent={"center"} mb={4}>
       <Flex
         w={"80vw"}
         bgColor={"gray.100"}

@@ -134,8 +134,12 @@ export const searchUser = async (req, res) => {
   }
 
   const user = await User.find({
-    $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
+    $or: [
+      { email: { $regex: emailOrUsername, $options: 'i' } }, // 'i' for case-insensitive
+      { username: { $regex: emailOrUsername, $options: 'i' } },
+    ],
   });
+
   if (user.length === 0) {
     return res.json({
       errors: [
@@ -147,7 +151,7 @@ export const searchUser = async (req, res) => {
     });
   }
   return res.json({
-    user: user[0],
+    user: user,
   });
 };
 
@@ -158,3 +162,27 @@ export const findUserById = async (req, res) => {
     user: user,
   });
 };
+
+
+export const readNotif = async (req, res) => {
+  const {userId} = req.session;
+  const user = await User.findById(userId);
+  user.notifs.forEach((notif) => {
+    notif.seen = true;
+  });
+  await user.save();
+  return res.json({
+    user: user,
+  });
+}
+
+export const deleteNotif = async (req, res) => {
+  const {userId} = req.session;
+  const {notifId} = req.body;
+  const user = await User.findById(userId);
+  user.notifs = user.notifs.filter((notif) => notif._id.toString() !== notifId);
+  await user.save();
+  return res.json({
+    user: user,
+  });
+}

@@ -86,10 +86,10 @@ export const loadRoom = async (req, res) => {
 export const loadChats = async (req, res) => {
   const { roomId } = req.body;
   const room = await Room.findById(roomId);
-  if(!room){
+  if (!room) {
     return res.json({
-      chats: []
-    })
+      chats: [],
+    });
   }
   return res.json({
     chats: room.chats,
@@ -101,14 +101,41 @@ export const getUsers = async (req, res) => {
   const room = await Room.findById(roomId);
   if (!room) {
     return res.json({
-      errors:[
+      errors: [
         {
-          message: "No Room found"
-        }
-      ]
-    })
+          message: "No Room found",
+        },
+      ],
+    });
   }
   return res.json({
     users: room.users,
   });
 };
+
+export const inviteMember = async (req, res) => {
+  const { roomId, userId } = req.body;
+  const user = await User.findById(userId);
+  const room = await Room.findById(roomId);
+  const obj = {
+    seen: false,
+    message: `You have been invited to join ${room.name}`,
+    room: room._id,
+  }
+  user.notifs.push(obj);
+  await user.save();
+  return res.json({
+    user: user,
+  });
+};
+
+
+export const addResource = async (req, res) => {
+  const { roomId, resource } = req.body;
+  const room = await Room.findById(roomId);
+  room.resources.push(resource);
+  await room.save();
+  return res.json({
+    room: room,
+  });
+}

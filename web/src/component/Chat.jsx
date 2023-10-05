@@ -1,7 +1,7 @@
 import { Button, Flex, Input, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { createChats, readChatById } from "../axios/axios";
 import { useChats } from "../utils/useChats";
@@ -9,17 +9,23 @@ import { useLoaderData } from "react-router-dom";
 
 const Chat = ({ room }) => {
   const socket = io("http://localhost:4000");
+  const chatContRef = useRef(null);
   function createChat(roomId, msg, sender) {
-    socket.emit("createChat", { roomId: roomId, msg: msg, sender: sender });
+    socket.emit("createChat", {
+      chat: { roomId: roomId, message: msg, sender: sender },
+    });
   }
   socket.on("chatCreated", (data) => {
-    console.log(data);
+    if (data.chat.roomId === room._id && !chatLoading) {
+      setChatLoading(true);
+      setChatLst([...chatLst, data]);
+    }
   });
   const { loading: ld, user } = useLoaderData();
   let body = null;
   const { loading, chats } = useChats(room._id);
   const [chatLst, setChatLst] = useState([]);
-  const [chatLoading, setChatLoading] = useState(true)
+  const [chatLoading, setChatLoading] = useState(true);
   async function convertChat(chats) {
     const chatDetailsPromises = chats.map((chatId) => readChatById(chatId));
     const chatDetailsData = await Promise.all(chatDetailsPromises);
@@ -32,28 +38,36 @@ const Chat = ({ room }) => {
   }, [loading, chats]);
 
   useEffect(() => {
-    setChatLoading(false)
-  }, [chatLst]);
+    setChatLoading(false);
+    if (chatContRef.current) {
+      // chatContRef.current.scrollTop = chatContRef.current.scrollHeight;
+    }
+  }, [chatLoading, chatLst]);
 
+  // console.log(chatLst);
   if (loading) {
     body = <div>Loading....</div>;
   } else if (!loading && !ld && chats) {
     body = (
       <>
-        {!chatLoading && chatLst.map((ch, id) => {
-          return (
-            <Flex
-              w={"25vw"}
-              key={id}
-              p={2}
-              borderRadius={10}
-              ml={ch.chat.sender === user._id ? "37vw" : "0vw"}
-              bgColor={ch.chat.sender === user._id ? "whatsapp.100" : "facebook.100"}
-            >
-              {ch.chat.message}
-            </Flex>
-          );
-        })}
+        {!chatLoading &&
+          chatLst.map((ch, id) => {
+            // console.log(ch)
+            return (
+              <Flex
+                w={"25vw"}
+                key={id}
+                p={2}
+                borderRadius={10}
+                ml={ch.chat.sender === user._id ? "37vw" : "0vw"}
+                bgColor={
+                  ch.chat.sender === user._id ? "whatsapp.100" : "facebook.100"
+                }
+              >
+                {ch.chat.message}
+              </Flex>
+            );
+          })}
       </>
     );
   }
@@ -74,6 +88,20 @@ const Chat = ({ room }) => {
           p={4}
           overflowX={"hidden"}
           overflowY={"scroll"}
+          flexDir={'column-reverse'}
+          // ref={chatContRef}
+          css={{
+            '&::-webkit-scrollbar': {
+              width: '4px',
+            },
+            '&::-webkit-scrollbar-track': {
+              width: '6px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: "lightgray",
+              borderRadius: '24px',
+            },
+          }}
         >
           <VStack spacing={4}>{body}</VStack>
         </Flex>
@@ -126,6 +154,9 @@ const Chat = ({ room }) => {
 
 Chat.propTypes = {
   room: PropTypes.object.isRequired,
+  isSubmitting: PropTypes.bool,
+  handleChange: PropTypes.func,
+  values: PropTypes.string
 };
 
 export default Chat;
