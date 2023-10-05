@@ -34,7 +34,6 @@ const Resources = ({ room }) => {
         templateColumns={"repeat(auto-fit, minmax(300px, 0.25fr))"}
       >
         {resources.map((resource, id) => {
-          console.log(resource.slice(87, resource.length-40))
           return (
             <Resource
               key={id}

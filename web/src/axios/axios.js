@@ -108,7 +108,7 @@ export const handleUpload = async (file, room) => {
   const formData = new FormData();
   const upload_preset = "hxhc2dge";
   const cloudName = "drk6tmn92";
-  console.log(file)
+  console.log(file);
   formData.append("file", file);
   formData.append("upload_preset", upload_preset);
   formData.append("folder", room._id);
@@ -120,4 +120,14 @@ export const handleUpload = async (file, room) => {
   );
   const url = res.data.secure_url;
   return url;
+};
+
+export const addTask = async (roomId, taskObj) => {
+  const res = await instance.post("/room/task/add", { roomId, taskObj });
+  return res.data;
+};
+
+export const removeTask = async (roomId, taskId) => {
+  const res = await instance.post("/room/task/remove", { roomId, taskId });
+  return res.data;
 };

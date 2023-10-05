@@ -4,6 +4,7 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import Participants from "../../component/Participants";
 import Chat from "../../component/Chat";
 import Resources from "../../component/Resources";
+import GroupTasks from "../../component/GroupTasks";
 
 const Room = () => {
   const roomId = window.location.pathname.split("/")[2];
@@ -25,7 +26,7 @@ const Room = () => {
           />
         </Flex>
         <Flex w={"100%"}>
-          <Tabs isFitted variant={"soft-rounded"} w={"100%"} defaultIndex={0}>
+          <Tabs isFitted variant={"soft-rounded"} w={"100%"} defaultIndex={3}>
             <TabList>
               <Tab>Resources</Tab>
               <Tab>Chat</Tab>
@@ -44,7 +45,7 @@ const Room = () => {
                 <Participants room={room} />
               </TabPanel>
               <TabPanel>
-                <p>four!</p>
+                <GroupTasks room={room}/>
               </TabPanel>
             </TabPanels>
           </Tabs>
