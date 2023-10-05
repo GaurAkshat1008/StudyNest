@@ -40,6 +40,7 @@ const Navbar = () => {
   if (!loading && user && isLoggedin) {
     lgnbtn = (
       <>
+      
         <Button
           onClick={async () => {
             onOpen();
@@ -146,8 +147,10 @@ const Navbar = () => {
         alignItems={"center"}
         p={4}
       >
-        <Flex flex={0.2}></Flex>
-        <Flex flex={0.4}></Flex>
+        <Flex flex={0.2} fontSize={'2rem'} as={'a'} href="/">StudyNest</Flex>
+        {/* <Flex flex={0.4}>
+          <Button as={'a'} href="/dashboard">Dashboard</Button>
+        </Flex> */}
         <Flex flex={0.4} justifyContent={"flex-end"} alignItems={"center"}>
           {lgnbtn}
         </Flex>

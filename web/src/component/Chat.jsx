@@ -1,4 +1,4 @@
-import { Button, Flex, Input, VStack } from "@chakra-ui/react";
+import { Button, Flex, Input, VStack, Spinner } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
@@ -46,7 +46,11 @@ const Chat = ({ room }) => {
 
   // console.log(chatLst);
   if (loading) {
-    body = <div>Loading....</div>;
+    body = (
+      <Flex justify={"center"}>
+        <Spinner size={"xl"} />
+      </Flex>
+    );
   } else if (!loading && !ld && chats) {
     body = (
       <>
@@ -88,18 +92,18 @@ const Chat = ({ room }) => {
           p={4}
           overflowX={"hidden"}
           overflowY={"scroll"}
-          flexDir={'column-reverse'}
+          flexDir={"column-reverse"}
           // ref={chatContRef}
           css={{
-            '&::-webkit-scrollbar': {
-              width: '4px',
+            "&::-webkit-scrollbar": {
+              width: "4px",
             },
-            '&::-webkit-scrollbar-track': {
-              width: '6px',
+            "&::-webkit-scrollbar-track": {
+              width: "6px",
             },
-            '&::-webkit-scrollbar-thumb': {
+            "&::-webkit-scrollbar-thumb": {
               backgroundColor: "lightgray",
-              borderRadius: '24px',
+              borderRadius: "24px",
             },
           }}
         >
@@ -156,7 +160,7 @@ Chat.propTypes = {
   room: PropTypes.object.isRequired,
   isSubmitting: PropTypes.bool,
   handleChange: PropTypes.func,
-  values: PropTypes.string
+  values: PropTypes.string,
 };
 
 export default Chat;

@@ -1,27 +1,26 @@
 import {
+  Avatar,
   Box,
   Button,
+  Flex,
   Grid,
+  Input,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
-  Flex,
-  Input,
-  VStack,
-  Avatar,
+  Spinner,
+  useDisclosure
 } from "@chakra-ui/react";
+import { Form, Formik } from "formik";
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import { invitemember, searchUser } from "../axios/axios";
 import { useGetUsers } from "../utils/useGetUsers";
 import Participant from "./Participant";
-import { Formik, Form } from "formik";
-import { invitemember, searchUser } from "../axios/axios";
-import { useState } from "react";
 
 const Participants = ({ room }) => {
   const { loading, users } = useGetUsers(room);
@@ -30,7 +29,11 @@ const Participants = ({ room }) => {
   let body = null;
   const [invitees, setInvitees] = useState(null);
   if (loading) {
-    body = <div>loading...</div>;
+    body = (
+      <Flex justify={"center"}>
+        <Spinner size={"xl"} />
+      </Flex>
+    );
   } else if (!loading && users.length === 0) {
     body = <div>No Participants found</div>;
   } else {
@@ -44,8 +47,8 @@ const Participants = ({ room }) => {
   }
   const onC = () => {
     onClose();
-    setInvitees(null); 
-  }
+    setInvitees(null);
+  };
   return (
     <>
       {body}
@@ -54,12 +57,7 @@ const Participants = ({ room }) => {
           <Box pos={"fixed"} onClick={onOpen} bottom={25} right={40}>
             <Button>+ Invite</Button>
           </Box>
-          <Modal
-            isCentered
-            motionPreset="scale"
-            isOpen={isOpen}
-            onClose={onC}
-          >
+          <Modal isCentered motionPreset="scale" isOpen={isOpen} onClose={onC}>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>Invite Members</ModalHeader>
@@ -107,8 +105,8 @@ const Participants = ({ room }) => {
                     } else if (res.user) {
                       const filtered = res.user.filter(
                         (us) => !room.users.includes(us._id)
-                        );
-                        console.log(filtered);
+                      );
+                      console.log(filtered);
                       if (filtered.length === 0) {
                         setInvitees(
                           <Flex

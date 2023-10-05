@@ -5,13 +5,18 @@ import Participants from "../../component/Participants";
 import Chat from "../../component/Chat";
 import Resources from "../../component/Resources";
 import GroupTasks from "../../component/GroupTasks";
+import { Spinner } from '@chakra-ui/react'
 
 const Room = () => {
   const roomId = window.location.pathname.split("/")[2];
   const { loading, room, error } = useRoom(roomId);
   let body = null;
   if (loading) {
-    body = <div>loading...</div>;
+    body = (
+        <Flex justify={'center'}>
+          <Spinner size={'xl'}/>
+        </Flex>
+      );
   } else if (!loading && error) {
     body = <div>Room not found</div>;
   } else {
@@ -26,7 +31,7 @@ const Room = () => {
           />
         </Flex>
         <Flex w={"100%"}>
-          <Tabs isFitted variant={"soft-rounded"} w={"100%"} defaultIndex={3}>
+          <Tabs isFitted variant={"soft-rounded"} w={"100%"} defaultIndex={1}>
             <TabList>
               <Tab>Resources</Tab>
               <Tab>Chat</Tab>

@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Grid, GridItem, Skeleton, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Skeleton,
+  Stack,
+} from "@chakra-ui/react";
 import { loadRooms } from "../axios/axios";
 import { useEffect, useState } from "react";
 import RoomCard from "../component/RoomCard";
@@ -8,10 +16,10 @@ const Dashboard = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const {loading:ld, user} = useLoaderData();
-  console.log(user)
-  if(!ld && !user){
-    window.location.href = '/login'
+  const { loading: ld, user } = useLoaderData();
+  // console.log(user);
+  if (!ld && !user) {
+    window.location.href = "/login";
   }
   let body = null;
   const getRooms = async () => {
@@ -27,7 +35,7 @@ const Dashboard = () => {
   useEffect(() => {
     getRooms();
   }, []);
-  console.log(rooms);
+  // console.log(rooms);
   if (loading) {
     body = (
       <Grid
@@ -108,16 +116,11 @@ const Dashboard = () => {
           templateColumns={"repeat(auto-fit, minmax(300px, 0.25fr))"}
         >
           {rooms.map((room) => (
-            <RoomCard
-              key={room.id}
-              name={room.name}
-              admin={room.admin[0].username}
-              id={room._id}
-            />
+            <RoomCard key={room._id} room={room} />
           ))}
         </Grid>
-        <Box pos={'fixed'} bottom={25} right={25}>
-          <Button as={'a'} href="/createroom">
+        <Box pos={"fixed"} bottom={25} right={25}>
+          <Button as={"a"} href="/createroom">
             + Create Room
           </Button>
         </Box>
