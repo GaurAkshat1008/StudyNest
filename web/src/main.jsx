@@ -1,9 +1,9 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Flex, Spinner } from "@chakra-ui/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import theme from "./theme.jsx";
-import { Flex, Spinner } from "@chakra-ui/react";
+import { SocketProvider } from "./context/socket.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -15,7 +15,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           </Flex>
         }
       >
-        <App />
+        <SocketProvider>
+          <App />
+        </SocketProvider>
       </React.Suspense>
     </ChakraProvider>
   </React.StrictMode>

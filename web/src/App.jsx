@@ -7,6 +7,8 @@ import Register from "./pages/Register.jsx";
 import Room from "./pages/room/Room.jsx";
 import { useAuth as authLoader } from "./utils/useAuth.js";
 import Index from "./pages/Index.jsx";
+import Video from "./pages/call/Video.jsx";
+import Test from "./pages/test.jsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -47,6 +49,15 @@ function App() {
     },
     {
       loader: authLoader,
+      path: "/video",
+      element: (
+        <>
+          <Navbar /> <Video />
+        </>
+      ),
+    },
+    {
+      loader: authLoader,
       path: "/",
       element: (
         <>
@@ -54,6 +65,10 @@ function App() {
         </>
       ),
     },
+    {
+      path: "/test",
+      element: <Test />
+    }
   ]);
   return <RouterProvider router={router} />;
 }

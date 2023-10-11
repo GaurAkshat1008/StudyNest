@@ -9,6 +9,8 @@ import {
   getUsers,
   inviteMember,
   addResource,
+  addTask,
+  removeTask,
 } from "../Controllers/roomController.js";
 import { protect } from "../Middleware/protect.js";
 
@@ -26,5 +28,8 @@ roomRouter.post("/user/invitemember", protect, inviteMember);
 roomRouter.post("/chats/loadchats", protect, loadChats);
 
 roomRouter.post("/res/add", protect, addResource);
+
+roomRouter.post("/task/add", protect, addTask);
+roomRouter.post("/task/remove", protect, removeTask);
 
 export default roomRouter;

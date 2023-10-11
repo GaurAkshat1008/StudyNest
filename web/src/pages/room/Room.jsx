@@ -6,11 +6,14 @@ import Chat from "../../component/Chat";
 import Resources from "../../component/Resources";
 import GroupTasks from "../../component/GroupTasks";
 import { Spinner } from '@chakra-ui/react'
+import Video from "../call/Video";
+import { useLoaderData } from "react-router-dom";
 
 const Room = () => {
   const roomId = window.location.pathname.split("/")[2];
   const { loading, room, error } = useRoom(roomId);
   let body = null;
+  const {user, loading: ld} = useLoaderData();
   if (loading) {
     body = (
         <Flex justify={'center'}>

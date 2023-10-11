@@ -121,14 +121,13 @@ export const inviteMember = async (req, res) => {
     seen: false,
     message: `You have been invited to join ${room.name}`,
     room: room._id,
-  }
+  };
   user.notifs.push(obj);
   await user.save();
   return res.json({
     user: user,
   });
 };
-
 
 export const addResource = async (req, res) => {
   const { roomId, resource } = req.body;
@@ -138,4 +137,25 @@ export const addResource = async (req, res) => {
   return res.json({
     room: room,
   });
-}
+};
+
+export const addTask = async (req, res) => {
+  const { roomId, taskObj } = req.body;
+  const room = await Room.findById(roomId);
+  room.tasks.push(taskObj);
+  await room.save();
+  return res.json({
+    room: room,
+  });
+};
+
+export const removeTask = async (req, res) => {
+  const { roomId, taskId } = req.body;
+  const room = await Room.findById(roomId);
+  room.tasks = room.tasks.filter((task) => task._id.toString() !== taskId);
+  await room.save();
+  return res.json({
+    room: room,
+  });
+};
+

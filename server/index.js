@@ -1,16 +1,15 @@
-import express from "express";
-import connectDB from "./DB/connection.js";
-import cors from "cors";
-import Redis from "ioredis";
-import session from "express-session";
 import RedisStore from "connect-redis";
+import cors from "cors";
 import dotenv from "dotenv";
-import userRouter from "./Router/auth.js";
-import roomRouter from "./Router/room.js";
-import chatRouter from "./Router/chat.js";
-import { Server } from "socket.io";
+import express from "express";
+import session from "express-session";
 import { createServer } from "http";
-import Chat from "./Schema/chatSchema.js";
+import Redis from "ioredis";
+import { Server } from "socket.io";
+import connectDB from "./DB/connection.js";
+import userRouter from "./Router/auth.js";
+import chatRouter from "./Router/chat.js";
+import roomRouter from "./Router/room.js";
 
 const main = async () => {
   const app = express();
@@ -23,11 +22,19 @@ const main = async () => {
       credentials: true,
     },
   });
+  const emailToSocketMap = new Map();
+  const socketToEmailMap = new Map();
   io.on("connection", (socket) => {
     socket.on("createChat", (data) => {
       socket.broadcast.emit("chatCreated", data);
-      console.log(data)
-    })
+      // console.log(data);
+    });
+    socket.on("call-joined", (data) => {
+      const {user, room} = data;
+      emailToSocketMap.set(user, socket.id);
+      socketToEmailMap.set(socket.id, user);
+      io.to(socket.id).emit("call-joined", data);
+    });
   });
   app.use(express.json());
   await connectDB();

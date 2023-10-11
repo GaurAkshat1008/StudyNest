@@ -20,6 +20,16 @@ const roomSchema = new Schema({
       type: String,
     },
   ],
+  tasks: [
+    {
+      task: {
+        type: String,
+      },
+      deadline: {
+        type: String,
+      },
+    },
+  ],
   users: [
     {
       type: mongoose.Schema.Types.ObjectId,

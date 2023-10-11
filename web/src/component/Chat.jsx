@@ -1,11 +1,11 @@
-import { Button, Flex, Input, VStack, Spinner } from "@chakra-ui/react";
+import { Button, Flex, Input, Spinner, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
+import { useLoaderData } from "react-router-dom";
 import { io } from "socket.io-client";
 import { createChats, readChatById } from "../axios/axios";
 import { useChats } from "../utils/useChats";
-import { useLoaderData } from "react-router-dom";
 
 const Chat = ({ room }) => {
   const socket = io("http://localhost:4000");
