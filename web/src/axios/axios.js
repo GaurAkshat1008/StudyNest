@@ -2,7 +2,7 @@ import axios from "axios";
 import { v4 } from "uuid";
 
 const instance = axios.create({
-  baseURL: "http://localhost:4000/api",
+  baseURL: "https://studynest-backend.onrender.com/api",
   withCredentials: true,
 });
 
