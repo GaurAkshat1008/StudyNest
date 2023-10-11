@@ -8,7 +8,7 @@
     "dev": "nodemon index.js"
   },
   "engine": {
-    "node": "16.13.0"
+    "node": ">=16.0"
   },
   "author": "",
   "license": "ISC",
