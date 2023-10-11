@@ -1,19 +1,19 @@
 import User from "../Schema/userSchema.js";
 import Room from "../Schema/roomSchema.js";
 import Chat from "../Schema/chatSchema.js";
-import OpenAI from "openai";
-import readlineSync from "readline-sync";
+// import OpenAI from "openai";
+// import readlineSync from "readline-sync";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_APIKEY });
+// const openai = new OpenAI({ apiKey: process.env.OPENAI_APIKEY });
 
-async function ask(){
-  const chat = await openai.chat.completions.create({
-    messages: [{role:'user', content:"say this is a test"}],
-    model: 'gpt-3.5-turbo',
-  })
-  console.log(chat.data.choices)
-}
-// ask()
+// async function ask(){
+//   const chat = await openai.chat.completions.create({
+//     messages: [{role:'user', content:"say this is a test"}],
+//     model: 'gpt-3.5-turbo',
+//   })
+//   console.log(chat.data.choices)
+// }
+// // ask()
 
 export const createChat = async (req, res) => {
   const { roomId, message } = req.body;
