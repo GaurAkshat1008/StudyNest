@@ -40,7 +40,7 @@ const main = async () => {
   await connectDB();
   app.use(
     cors({
-      origin: "https://studynest.vercel.app",
+      origin: ["https://studynest.vercel.app","http://localhost:5173"],
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
       credentials: true,
     })
