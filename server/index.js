@@ -45,9 +45,7 @@ const main = async () => {
       credentials: true,
     })
   );
-  const redis = new Redis({
-    host: process.env.REDIS_HOST,
-  });
+  const redis = new Redis(`${process.env.REDIS_HOST}/?family=6`);
   app.use(
     session({
       store: new RedisStore({ client: redis }),
