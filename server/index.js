@@ -45,6 +45,13 @@ const main = async () => {
       credentials: true,
     })
   );
+  app.all("/*", (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "https://studynest.vercel.app");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    res.header("Access-Control-Allow-Credentials", true);
+    next();
+  });
   const redis = new Redis(process.env.REDIS_URL);
   app.use(
     session({
