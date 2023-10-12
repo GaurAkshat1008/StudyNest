@@ -20,7 +20,7 @@ const Login = () => {
             if (response.errors) {
               setErrors(toErrorMap(response.errors));
             } else {
-              window.location.href = "/dashboard";
+              // window.location.href = "/dashboard";
             }
           }}
         >
